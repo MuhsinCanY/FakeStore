@@ -7,8 +7,14 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class FavoriteViewController: MenuCustomViewController {
+    
+    let realm = try! Realm()
+    lazy var favorites: Results<Favorite2> = {
+        self.realm.objects(Favorite2.self)
+    }()
     
     lazy var collectionView: UICollectionView = {
         
@@ -47,13 +53,14 @@ class FavoriteViewController: MenuCustomViewController {
 extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        favorites.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCollectionViewCell.cellId, for: indexPath) as! FavoriteCollectionViewCell
         
-        cell.backgroundColor = .darkGray
+        let productId = favorites[indexPath.row]
+        cell.configure(productId: productId.productId)
         
         return cell
     }
@@ -63,6 +70,14 @@ extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDe
         return CGSize(width: view.bounds.width - 20, height: 120)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let id = favorites[indexPath.item].productId
+        
+        let sheetViewController = DetailViewController(productId: id)
+        sheetViewController.modalPresentationStyle = .formSheet
+        sheetViewController.modalTransitionStyle = .coverVertical
+        present(sheetViewController, animated: true, completion: nil)
+    }
     
     
 }

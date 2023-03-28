@@ -12,6 +12,7 @@ import Cosmos
 class FavoriteCollectionViewCell: UICollectionViewCell {
     
     static let cellId = "favoriteCell"
+    var product: ProductElement?
     
     let productImageView = CustomImageView().productImageView()
     
@@ -46,10 +47,35 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpLayout()
+        
+        contentView.layer.borderWidth = 1.0
+        contentView.layer.borderColor = CGColor(gray: 0, alpha: 0.5)
+        contentView.layer.cornerRadius = 15.0
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(productId: Int){
+        
+        GetSingleProduct.shared.getSingleProduct(id: productId) { product in
+            if let product = product {
+                self.product = product
+                self.productImageView.downloadSetImage(url: product.image)
+                self.productTitleLabel.text = product.title
+                self.ratingView.text = "(+\(product.rating.count))"
+                self.ratingView.rating = product.rating.rate
+                let titleHeight = product.title.height(withConstrainedWidth: self.contentView.bounds.width - 160, font: .systemFont(ofSize: 20, weight: .bold))
+                self.productTitleLabel.snp.makeConstraints { make in
+                    make.height.equalTo(titleHeight)
+                }
+                print(titleHeight)
+                print(product.title)
+                
+            }
+        }
+        
     }
     
     func setUpLayout(){
@@ -64,7 +90,7 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         
         
         productTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(productImageView.snp_trailingMargin).inset(-16)
+            make.leading.equalTo(productImageView.snp_trailingMargin).inset(-15)
             make.top.equalTo(contentView).inset(10)
             make.trailing.equalTo(contentView).inset(35)
             make.height.equalTo(50)
@@ -85,11 +111,6 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
             make.leading.equalTo(productImageView.snp_trailingMargin).inset(-20)
         }
         
-        productPriceLabel.text = "$100"
-        ratingView.text = "+123123"
-        productPriceLabel.backgroundColor = .lightGray
-        productImageView.backgroundColor = .lightGray
-        productTitleLabel.backgroundColor = .lightGray
     }
     
 }
