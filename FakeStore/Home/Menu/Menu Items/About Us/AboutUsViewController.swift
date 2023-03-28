@@ -11,7 +11,7 @@ class AboutUsViewController: MenuCustomViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setTitle(title: "About Us")
         
     }
     

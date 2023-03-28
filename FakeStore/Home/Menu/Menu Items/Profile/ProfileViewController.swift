@@ -12,7 +12,7 @@ class ProfileViewController: MenuCustomViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setTitle(title: "Profile")
     }
     
 }

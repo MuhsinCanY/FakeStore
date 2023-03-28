@@ -81,6 +81,12 @@ class DetailViewController: UIViewController{
         navigationController?.pushViewController(CartViewController(), animated: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let notificationName = Notification.Name("refreshFavoriteCollectionView")
+        NotificationCenter.default.post(name: notificationName, object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -118,12 +124,6 @@ class DetailViewController: UIViewController{
             }
         }
         
-    }
-    
-    
-    
-    @objc func callMethod(){
-        navigationController?.popViewController(animated: true)
     }
     
     override func viewDidLayoutSubviews() {

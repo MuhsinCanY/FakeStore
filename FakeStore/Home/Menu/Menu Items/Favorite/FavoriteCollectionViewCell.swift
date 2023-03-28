@@ -8,11 +8,19 @@
 import UIKit
 import SnapKit
 import Cosmos
+import RealmSwift
+
+protocol FavoriteCollectionViewCellProtocol{
+    func refreshCollectionView()
+}
 
 class FavoriteCollectionViewCell: UICollectionViewCell {
     
     static let cellId = "favoriteCell"
-    var product: ProductElement?
+    var delegate: FavoriteCollectionViewCellProtocol?
+    var favorite: Favorite2?
+    let realm = try! Realm()
+
     
     let productImageView = CustomImageView().productImageView()
     
@@ -20,9 +28,10 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 15, weight: .bold)
-        label.numberOfLines = 2
+        label.numberOfLines = 4
         return label
     }()
+    
     
     let productPriceLabel: UILabel = {
         let label = UILabel()
@@ -31,9 +40,14 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    
     lazy var trashButton = AnimatedButton(image: UIImage(named: "trash"), action: UIAction.init(handler: { _ in
-        print("trash tapped")
+        try! self.realm.write {
+            self.realm.delete(self.favorite!)
+            self.delegate?.refreshCollectionView()
+        }
     }))
+    
     
     let ratingView: CosmosView = {
         let view = CosmosView()
@@ -44,6 +58,7 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpLayout()
@@ -53,26 +68,26 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 15.0
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        productImageView.image = nil
     }
     
-    func configure(productId: Int){
-        
-        GetSingleProduct.shared.getSingleProduct(id: productId) { product in
+
+    func configure(favorite: Favorite2){
+        self.favorite = favorite
+        GetSingleProduct.shared.getSingleProduct(id: favorite.productId) { product in
             if let product = product {
-                self.product = product
                 self.productImageView.downloadSetImage(url: product.image)
                 self.productTitleLabel.text = product.title
                 self.ratingView.text = "(+\(product.rating.count))"
                 self.ratingView.rating = product.rating.rate
-                let titleHeight = product.title.height(withConstrainedWidth: self.contentView.bounds.width - 160, font: .systemFont(ofSize: 20, weight: .bold))
-                self.productTitleLabel.snp.makeConstraints { make in
+                self.productPriceLabel.text = "$\(product.price)"
+                let titleHeight = product.title.height(withConstrainedWidth: self.contentView.bounds.width - 160, font: .systemFont(ofSize: 15, weight: .regular))
+                self.productTitleLabel.snp.updateConstraints { make in
                     make.height.equalTo(titleHeight)
                 }
-                print(titleHeight)
-                print(product.title)
-                
             }
         }
         
@@ -111,6 +126,10 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
             make.leading.equalTo(productImageView.snp_trailingMargin).inset(-20)
         }
         
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
 }

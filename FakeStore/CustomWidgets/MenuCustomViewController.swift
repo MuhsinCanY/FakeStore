@@ -6,12 +6,20 @@
 //
 
 import UIKit
+import SnapKit
 
 class MenuCustomViewController: UIViewController {
     
     lazy var closeButton = AnimatedButton(iconImageName: "angle-left", iconImageColor: UIColor.black, action: UIAction.init(handler: { _ in
         self.navigationController?.popViewController(animated: true)
     }))
+    
+    let pageTitle: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 22)
+        label.textAlignment = .center
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +34,17 @@ class MenuCustomViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        view.addSubviews(closeButton)
+        view.addSubviews(closeButton, pageTitle)
         closeButton.frame = CGRect(x: 5, y: 50, width: 40, height: 40)
+        
+        pageTitle.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(closeButton.snp_centerYWithinMargins)
+        }
     }
-
+    
+    func setTitle(title: String){
+        pageTitle.text = title
+    }
+    
 }

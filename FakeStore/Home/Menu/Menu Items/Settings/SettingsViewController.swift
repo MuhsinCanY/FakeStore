@@ -11,7 +11,7 @@ class SettingsViewController: MenuCustomViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setTitle(title: "Settings")
     }
     
 
