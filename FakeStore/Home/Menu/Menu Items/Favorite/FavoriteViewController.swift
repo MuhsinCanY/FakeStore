@@ -36,12 +36,12 @@ class FavoriteViewController: MenuCustomViewController {
     
     lazy var emptyImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "empyFavorites")
+        iv.image = UIImage(named: "emptyFavorites")
         return iv
     }()
     
     
-    let textView = UITextView.createTextViewWithUpperText("No Favorites Yet", lowerText: "Mark your favorites items and always have them here", upperFont: .boldSystemFont(ofSize: 20))
+    let textView = UITextView.createTextViewWithUpperText("No Favorites Yet", lowerText: "Mark your favorites items and always have them here")
 
     override func viewDidLoad() {
         super.viewDidLoad()

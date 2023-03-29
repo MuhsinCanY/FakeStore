@@ -9,7 +9,7 @@ import UIKit
 
 
 extension UITextView {
-    static func createTextViewWithUpperText(_ upperText: String, lowerText: String, upperFont: UIFont = .systemFont(ofSize: 20), lowerFont: UIFont = .systemFont(ofSize: 14), upperTextColor: UIColor = .black, lowerTextColor: UIColor = .lightGray) -> UITextView {
+    static func createTextViewWithUpperText(_ upperText: String, lowerText: String, upperFont: UIFont = .boldSystemFont(ofSize: 20), lowerFont: UIFont = .systemFont(ofSize: 14), upperTextColor: UIColor = .black, lowerTextColor: UIColor = .lightGray) -> UITextView {
         let textView = UITextView()
         
         // Set upper text attributes
@@ -35,6 +35,8 @@ extension UITextView {
         // Set the attributed string as the text view's text
         textView.attributedText = attributedString
         textView.textAlignment = .center
+        textView.isEditable = false
+        textView.isSelectable = false
         return textView
     }
 }

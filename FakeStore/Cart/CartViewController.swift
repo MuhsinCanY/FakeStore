@@ -15,7 +15,17 @@ class CartViewController: UIViewController{
     lazy var realm = try! Realm()
     lazy var cartProducts: Results<ProductCart> = {
         self.realm.objects(ProductCart.self)
-    }()
+    }(){
+        didSet{
+            emptyImageView.isHidden = !cartProducts.isEmpty
+            empytTextView.isHidden = !cartProducts.isEmpty
+            totalPriceLabel.isHidden = cartProducts.isEmpty
+            totalLabel.isHidden = cartProducts.isEmpty
+            checkoutButton.isEnabled = !cartProducts.isEmpty
+            checkoutButton.isOpaque = !cartProducts.isEmpty
+            checkoutButton.alpha = cartProducts.isEmpty ? 0.5 : 1.0
+        }
+    }
     
     lazy var collectionView: UICollectionView = {
         
@@ -54,6 +64,15 @@ class CartViewController: UIViewController{
         return label
     }()
     
+    lazy var emptyImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "emptyCart")
+        return iv
+    }()
+    
+    
+    let empytTextView = UITextView.createTextViewWithUpperText("Your Cart is Empty", lowerText: "Looks like you haven't added anything to your cart yet")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,11 +83,16 @@ class CartViewController: UIViewController{
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        cartProducts = realm.objects(ProductCart.self)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         title = "Cart"
-        view.addSubviews(collectionView, checkoutView)
+        view.addSubviews(collectionView, checkoutView, emptyImageView, empytTextView)
         checkoutView.addSubviews(checkoutButton, totalLabel, totalPriceLabel)
         
         collectionView.snp.makeConstraints { make in
@@ -98,6 +122,18 @@ class CartViewController: UIViewController{
             make.bottom.equalTo(checkoutButton.snp_topMargin).offset(-10)
         }
         
+        emptyImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(256)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-50)
+        }
+
+        empytTextView.snp.makeConstraints { make in
+            make.width.equalTo(256)
+            make.height.equalTo(200)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(emptyImageView.snp.bottomMargin).offset(20)
+        }
         
     }
     
