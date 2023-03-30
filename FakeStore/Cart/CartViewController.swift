@@ -86,6 +86,7 @@ class CartViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cartProducts = realm.objects(ProductCart.self)
+        collectionView.reloadData()
     }
     
     override func viewDidLayoutSubviews() {

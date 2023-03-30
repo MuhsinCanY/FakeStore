@@ -72,6 +72,8 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         productImageView.image = nil
+        productPriceLabel.text = "$0.00"
+        productTitleLabel.text = ""
     }
     
 
