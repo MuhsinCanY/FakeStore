@@ -8,14 +8,12 @@
 
 import UIKit
 import SnapKit
-import RealmSwift
 
 class CartViewController: UIViewController{
     
-    lazy var realm = try! Realm()
-    lazy var cartProducts: Results<ProductCart> = {
-        self.realm.objects(ProductCart.self)
-    }(){
+    var viewModel = CartViewModel()
+    
+    var cartProducts: [ProductCart] = []{
         didSet{
             emptyImageView.isHidden = !cartProducts.isEmpty
             empytTextView.isHidden = !cartProducts.isEmpty
@@ -24,6 +22,7 @@ class CartViewController: UIViewController{
             checkoutButton.isEnabled = !cartProducts.isEmpty
             checkoutButton.isOpaque = !cartProducts.isEmpty
             checkoutButton.alpha = cartProducts.isEmpty ? 0.5 : 1.0
+            collectionView.reloadData()
         }
     }
     
@@ -53,7 +52,7 @@ class CartViewController: UIViewController{
        let label = UILabel()
         label.textAlignment = .right
         label.font = .boldSystemFont(ofSize: 25)
-        label.text = "$99.99"
+        label.text = "$0.00"
         return label
     }()
     
@@ -79,14 +78,20 @@ class CartViewController: UIViewController{
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        updatePrice()
+        
+        
+        viewModel.data.bind { [weak self] products in
+            self?.cartProducts = products ?? []
+        }
+        
+        viewModel.recievedData()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        cartProducts = realm.objects(ProductCart.self)
-        collectionView.reloadData()
+        viewModel.recievedData()
+        updatePrice()
     }
     
     override func viewDidLayoutSubviews() {
@@ -167,8 +172,7 @@ extension CartViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension CartViewController: CartCollectionViewCellProtocol{
     func trashButtonTapped() {
-        self.cartProducts = realm.objects(ProductCart.self)
-        collectionView.reloadData()
+        viewModel.recievedData()
     }
     
     func updatePrice() {
