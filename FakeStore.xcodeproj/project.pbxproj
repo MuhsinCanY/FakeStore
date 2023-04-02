@@ -31,6 +31,8 @@
 		AC3488D729C72BB400C52005 /* MenuCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3488D629C72BB400C52005 /* MenuCustomViewController.swift */; };
 		AC3488D929C9ADD900C52005 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3488D829C9ADD800C52005 /* Photo.swift */; };
 		AC34893F29D2F60100C52005 /* UITextView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC34893E29D2F60100C52005 /* UITextView+Ext.swift */; };
+		ACA8ABB129DA35C5004D4AC6 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA8ABB029DA35C5004D4AC6 /* CartViewModel.swift */; };
+		ACA8ABB329DA447C004D4AC6 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA8ABB229DA447C004D4AC6 /* Observable.swift */; };
 		ACE375E229B286A900FA918F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE375E129B286A900FA918F /* AppDelegate.swift */; };
 		ACE375E429B286A900FA918F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE375E329B286A900FA918F /* SceneDelegate.swift */; };
 		ACE375E629B286A900FA918F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE375E529B286A900FA918F /* HomeViewController.swift */; };
@@ -46,6 +48,7 @@
 		ACE3760929B4F7AF00FA918F /* GetCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE3760829B4F7AE00FA918F /* GetCategories.swift */; };
 		ACE3760B29B6154E00FA918F /* HomeCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE3760A29B6154D00FA918F /* HomeCategoryCollectionViewCell.swift */; };
 		ACE3760E29B62AE500FA918F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE3760D29B62AE400FA918F /* DetailViewController.swift */; };
+		ACECC06C29D5E32200A51F87 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACECC06B29D5E32200A51F87 /* Favorite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +74,8 @@
 		AC3488D629C72BB400C52005 /* MenuCustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCustomViewController.swift; sourceTree = "<group>"; };
 		AC3488D829C9ADD800C52005 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		AC34893E29D2F60100C52005 /* UITextView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Ext.swift"; sourceTree = "<group>"; };
+		ACA8ABB029DA35C5004D4AC6 /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
+		ACA8ABB229DA447C004D4AC6 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		ACE375DE29B286A900FA918F /* FakeStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE375E129B286A900FA918F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACE375E329B286A900FA918F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +91,7 @@
 		ACE3760829B4F7AE00FA918F /* GetCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCategories.swift; sourceTree = "<group>"; };
 		ACE3760A29B6154D00FA918F /* HomeCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		ACE3760D29B62AE400FA918F /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		ACECC06B29D5E32200A51F87 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				AC3487D329BBCC2A00C52005 /* CartViewController.swift */,
+				ACA8ABB029DA35C5004D4AC6 /* CartViewModel.swift */,
 				AC34884E29BF67A000C52005 /* CartCollectionViewCell.swift */,
 			);
 			path = Cart;
@@ -147,6 +154,7 @@
 			children = (
 				AC34887629C0703C00C52005 /* CartProduct.swift */,
 				AC3488D829C9ADD800C52005 /* Photo.swift */,
+				ACECC06B29D5E32200A51F87 /* Favorite.swift */,
 			);
 			path = "Realm-Database";
 			sourceTree = "<group>";
@@ -245,6 +253,7 @@
 			children = (
 				ACE375E129B286A900FA918F /* AppDelegate.swift */,
 				ACE375E329B286A900FA918F /* SceneDelegate.swift */,
+				ACA8ABB229DA447C004D4AC6 /* Observable.swift */,
 				AC34887529C0702600C52005 /* Realm-Database */,
 				AC34884B29BF5DE700C52005 /* CustomWidgets */,
 				AC2E5F3A29B74F3E00365808 /* Extentions */,
@@ -384,6 +393,7 @@
 				AC3487D929BBDE2A00C52005 /* UIView+Ext.swift in Sources */,
 				AC3488C829C5C88500C52005 /* MenuTableViewCell.swift in Sources */,
 				AC34884D29BF5E1200C52005 /* CustomImageView.swift in Sources */,
+				ACA8ABB329DA447C004D4AC6 /* Observable.swift in Sources */,
 				AC3488D529C7243F00C52005 /* FavoriteCollectionViewCell.swift in Sources */,
 				AC2E5F3829B7446100365808 /* GetSingleProduct.swift in Sources */,
 				ACE3760E29B62AE500FA918F /* DetailViewController.swift in Sources */,
@@ -396,6 +406,7 @@
 				AC3488CC29C71E3C00C52005 /* ProfileViewController.swift in Sources */,
 				AC34887129C06D1C00C52005 /* UIButton+Ext.swift in Sources */,
 				ACE375E629B286A900FA918F /* HomeViewController.swift in Sources */,
+				ACA8ABB129DA35C5004D4AC6 /* CartViewModel.swift in Sources */,
 				AC3488D929C9ADD900C52005 /* Photo.swift in Sources */,
 				ACE3760B29B6154E00FA918F /* HomeCategoryCollectionViewCell.swift in Sources */,
 				ACE375E229B286A900FA918F /* AppDelegate.swift in Sources */,
@@ -409,6 +420,7 @@
 				AC34889B29C1F4BA00C52005 /* AnimatedButton.swift in Sources */,
 				ACE3760629B4931000FA918F /* GetProduct.swift in Sources */,
 				ACE375E429B286A900FA918F /* SceneDelegate.swift in Sources */,
+				ACECC06C29D5E32200A51F87 /* Favorite.swift in Sources */,
 				ACE375FF29B489B300FA918F /* NetworkHelper.swift in Sources */,
 				ACE375F929B28DB500FA918F /* HomeMainCollectionViewCell.swift in Sources */,
 				AC3488C629C486B000C52005 /* MenuViewController.swift in Sources */,

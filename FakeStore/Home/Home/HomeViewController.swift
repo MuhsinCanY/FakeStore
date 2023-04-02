@@ -32,6 +32,10 @@ class HomeViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(HomeMainCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         cv.showsVerticalScrollIndicator = false
+        
+        cv.dataSource = self
+        cv.delegate = self
+        
         return cv
     }()
     
@@ -110,8 +114,6 @@ class HomeViewController: UIViewController {
         navigationController?.navigationItem.hidesSearchBarWhenScrolling = true
         
         view.backgroundColor = .systemBackground
-        collectionView.dataSource = self
-        collectionView.delegate = self
         
         categoryCollectionView.dataSource = self
         categoryCollectionView.delegate = self

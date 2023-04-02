@@ -10,17 +10,11 @@ import SnapKit
 import RealmSwift
 import Cosmos
 
-class Favorite2: Object{
-    @objc dynamic var productId = -1
-    
-    convenience init(productId: Int) {
-        self.init()
-        self.productId = productId
-    }
-}
-
 class DetailViewController: UIViewController{
     
+    let width = (UIScreen.main.bounds.width - 30) / 2
+    
+    var products: Product?
     var productId: Int
     var product: ProductElement?
     let realm = try! Realm()
@@ -76,6 +70,35 @@ class DetailViewController: UIViewController{
         view.settings.starMargin = 3
         return view
     }()
+    
+    let containerView: UIView = {
+        let view = UIView(frame: .zero)
+        return view
+    }()
+    
+    let collectionTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Other Products"
+        label.font = .boldSystemFont(ofSize: 20)
+        return label
+    }()
+    
+    lazy var collectionView: UICollectionView = {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.register(HomeMainCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        cv.showsHorizontalScrollIndicator = false
+        
+        cv.dataSource = self
+        cv.delegate = self
+        
+        return cv
+    }()
+    
     
     @objc func favoriteTapped(){
         if favoriteButton.imageView?.image == UIImage(named: "heartEmpty"){
@@ -150,12 +173,48 @@ class DetailViewController: UIViewController{
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        GetProduct.shared.getProduct { product in
+            if let product = product{
+                var randomElements = [ProductElement]()
+                while randomElements.count < 5 {
+                    if let element = product.randomElement(), !randomElements.contains(where: { $0.id == element.id }) {
+                        randomElements.append(element)
+                    }
+                }
+                self.products = randomElements
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        // Main Views
+        let bottomView = UIView()
+        bottomView.backgroundColor = .white.withAlphaComponent(0.7)
         
-        view.addSubviews(scrollView, addCartButton)
-        scrollView.addSubviews(productImageView, titleLabel, ratingView, productPriceLabel, descriptionLabel, favoriteButton)
+        view.addSubviews(scrollView, bottomView)
+        bottomView.addSubview(addCartButton)
         
+        scrollView.snp.makeConstraints { make in
+            make.leading.trailing.top.bottom.equalToSuperview()
+        }
+        
+        addCartButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view).inset(20)
+            make.bottom.equalTo(-25)
+            make.height.equalTo(40)
+        }
+        
+        bottomView.snp.makeConstraints { make in
+            make.leading.bottom.trailing.equalTo(view)
+            make.height.equalTo(75)
+        }
+        
+        //ScrollView
+        scrollView.addSubviews(productImageView, titleLabel, ratingView, productPriceLabel, descriptionLabel, favoriteButton, containerView)
         
         productImageView.snp.makeConstraints { make in
             make.top.equalTo(scrollView).inset(20)
@@ -183,24 +242,32 @@ class DetailViewController: UIViewController{
             make.top.equalTo(ratingView.snp_bottomMargin).inset(-10)
         }
         
-        addCartButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view).inset(20)
-            make.bottom.equalTo(-25)
-            make.height.equalTo(40)
-        }
-        
         favoriteButton.snp.makeConstraints { make in
             make.trailing.equalTo(view).inset(15)
             make.top.equalTo(productImageView.snp_topMargin)
             make.width.height.equalTo(30)
         }
+        //ContainerView
+        containerView.addSubviews(collectionView, collectionTitle)
         
-        scrollView.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalToSuperview()
+        containerView.snp.makeConstraints { make in
+            make.trailing.leading.equalTo(view).inset(30)
+            make.top.equalTo(descriptionLabel.snp_bottomMargin).inset(-20)
+            make.height.equalTo(width * 1.3 + 60)
+        }
+        
+        collectionTitle.snp.makeConstraints { make in
+            make.trailing.leading.top.equalTo(containerView)
+            make.height.equalTo(30)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.trailing.leading.bottom.equalTo(containerView)
+            make.top.equalTo(collectionTitle.snp_bottomMargin).offset(10)
         }
         
         let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
-        let contentHeight = 70 + 20 + navigationBarHeight + productImageView.frame.height + ratingView.frame.height + titleLabel.frame.height + descriptionLabel.frame.height
+        let contentHeight = 70 + 20 + containerView.frame.height + navigationBarHeight + productImageView.frame.height + ratingView.frame.height + titleLabel.frame.height + descriptionLabel.frame.height
 
         scrollView.contentSize = CGSize(width: view.frame.width, height: contentHeight)
     }
@@ -212,6 +279,27 @@ class DetailViewController: UIViewController{
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return products?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! HomeMainCollectionViewCell
+        let randomProduct = products?[indexPath.item]
+        if let randomProduct = randomProduct{
+            cell.configure(product: randomProduct)
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: width, height: width * 1.3)
     }
     
 }
