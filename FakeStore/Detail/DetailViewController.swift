@@ -156,7 +156,7 @@ class DetailViewController: UIViewController{
                 self.titleLabel.text = product.title
                 self.ratingView.text = "(+\(product.rating.count))"
                 self.ratingView.rating = product.rating.rate
-                self.productPriceLabel.text = "$\(product.price)"
+                self.productPriceLabel.text = "$" + String(format: "%.2f", product.price)
                 self.descriptionLabel.text = product.description
                 
                 let titleHeight = product.title.height(withConstrainedWidth: self.view.bounds.width - 60, font: .systemFont(ofSize: 20, weight: .bold))

@@ -7,22 +7,45 @@
 
 import UIKit
 import SnapKit
-import RealmSwift
-
-protocol HomeControllerDelegate{
-    func handleMenuToggle()
-}
 
 class HomeViewController: UIViewController {
     
-    var products = Product()
-    var categories = [String]()
+    //MARK: - Properties
+    var viewModel = HomeModelView()
     var delegate: HomeControllerDelegate?
-    lazy var realm = try! Realm()
-    lazy var cartProducts: Results<ProductCart> = {
-        self.realm.objects(ProductCart.self)
-    }()
     
+    var products = Product(){
+        didSet{
+            collectionView.reloadData()
+        }
+    }
+    
+    var cartProductsCount = 0{
+        didSet{
+            cartButtonBadge.setTitle(cartProductsCount > 0 ? "\(cartProductsCount)" : nil, for: .normal)
+            cartButtonBadge.isHidden = cartProductsCount <= 0
+        }
+    }
+    
+    var categories = [String](){
+        didSet{
+            self.categoryCollectionView.reloadData()
+            self.categoryCollectionView.selectItem(at: IndexPath.init(item: 0, section: 0), animated: true, scrollPosition: .centeredVertically)
+        }
+    }
+    
+    var shouldAnimateCollectionView = false{
+        didSet{
+            collectionView.alpha = shouldAnimateCollectionView ? 0 : 1
+            if shouldAnimateCollectionView{
+                activityIndicator.startAnimating()
+            }else{
+                activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
+    //MARK: - UI Components
     lazy var collectionView: UICollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -48,6 +71,10 @@ class HomeViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(HomeCategoryCollectionViewCell.self, forCellWithReuseIdentifier: "categotyCell")
         cv.showsHorizontalScrollIndicator = false
+        
+        cv.dataSource = self
+        cv.delegate = self
+        
         return cv
     }()
     
@@ -59,7 +86,7 @@ class HomeViewController: UIViewController {
         searhBar.searchTextField.backgroundColor = .clear
         searhBar.searchTextField.leftView = UIImageView(image: UIImage(named: "search")?.withTintColor(UIColor.init(white: 0, alpha: 0.5), renderingMode: .alwaysOriginal))
         searhBar.placeholder = "Search Here"
-        
+        searhBar.delegate = self
         return searhBar
     }()
     
@@ -91,18 +118,13 @@ class HomeViewController: UIViewController {
         return indicator
     }()
     
-    
+    //MARK: - Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = true
+
+        viewModel.fetchCartProductCount()
         
-        let count = cartProducts.filter { $0.check == true }.count
-        if count > 0{
-            cartButtonBadge.setTitle("\(count)", for: .normal)
-            cartButtonBadge.isHidden = false
-        }else{
-            cartButtonBadge.isHidden = true
-        }
+        navigationController?.isNavigationBarHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -111,28 +133,31 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationItem.hidesSearchBarWhenScrolling = true
         
-        view.backgroundColor = .systemBackground
-        
-        categoryCollectionView.dataSource = self
-        categoryCollectionView.delegate = self
-        
-        searchBar.delegate = self
-        
-        GetCategories.shared.getCategories { json in
-            self.categories = json
-//            self.categories.insert("All", at: 0)
-            DispatchQueue.main.async {
-                self.categoryCollectionView.reloadData()
-                self.categoryCollectionView.selectItem(at: IndexPath.init(item: 0, section: 0), animated: true, scrollPosition: .centeredVertically)
-            }
+        viewModel.products.bind { product in
+            self.products = product ?? []
         }
         
-        activityIndicator.startAnimating()
-        fetchData()
+        viewModel.cartProductsCount.bind { cartProducts in
+            self.cartProductsCount = cartProducts ?? 0
+        }
+        
+        viewModel.categories.bind { categories in
+            self.categories = categories ?? []
+        }
+        
+        viewModel.shouldAnimateCollectionView.bind { shouldAnimateCollectionView in
+            self.shouldAnimateCollectionView = shouldAnimateCollectionView ?? false
+        }
+        
+        viewModel.fetchData()
+        viewModel.fetchCategories()
+        
+        navigationController?.navigationItem.hidesSearchBarWhenScrolling = true
+        view.backgroundColor = .systemBackground
     }
     
+    //MARK: - Constraints
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -161,59 +186,30 @@ class HomeViewController: UIViewController {
             make.trailing.equalTo(view).inset(8)
             make.top.equalTo(view.safeAreaInsets.top)
             make.height.equalTo(44)
+            
+            searchBar.layer.border(cornerRadius: 15)
         }
         
         cartButton.snp.makeConstraints { make in
             make.width.height.equalTo(60)
             make.trailing.bottom.equalTo(view).inset(30)
+            
+            cartButton.layer.round()
         }
         
         cartButtonBadge.snp.makeConstraints { make in
             make.height.equalTo(26)
             make.leading.equalTo(cartButton.snp_trailingMargin).offset(-5)
             make.top.equalTo(cartButton.snp_topMargin).offset(-8)
+            
+            cartButtonBadge.layer.cornerRadius = 13
         }
-        
-        cartButtonBadge.layer.cornerRadius = 13
         
         activityIndicator.snp.makeConstraints { make in
             make.width.height.equalTo(100)
             make.center.equalToSuperview()
         }
-        
-        cartButton.layer.cornerRadius = cartButton.bounds.width / 2
-        
-        searchBar.layer.borderWidth = 1.0
-        searchBar.layer.borderColor = CGColor(gray: 0, alpha: 0.5)
-        searchBar.layer.cornerRadius = 15.0
-        
-    }
-    
-    func fetchData(){
-        
-        GetProduct.shared.getProduct { product in
-            if let product = product{
-                self.products = product
-                self.collectionViewStopAnimating()
-            }
-        }
-    }
-    
-    
-    func collectionViewStartAnimating(){
-        self.products.removeAll()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.activityIndicator.startAnimating()
-        }
-    }
-    
-    
-    func collectionViewStopAnimating(){
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.activityIndicator.stopAnimating()
-        }
+   
     }
     
 }
@@ -223,22 +219,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == categoryCollectionView{
-            var category = categories[indexPath.item]
-            category = category.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-            collectionViewStartAnimating()
-            if category == "All"{
-                fetchData()
-//                collectionViewStopAnimating()
-            }else{
-                GetProduct.shared.getProduct(withCategory: category) { product in
-                    if let product = product{
-                        self.products = product
-                        self.collectionViewStopAnimating()
-                    }
-                }
-                
-            }
-            
+            viewModel.fetchProductsSelectedCategory(category: categories[indexPath.item])
         }else{
             let id = products[indexPath.item].id
             navigationController?.pushViewController(DetailViewController(productId: id), animated: true)
@@ -285,23 +266,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 extension HomeViewController: UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        if searchText == ""{
-            fetchData()
-        }else{
-            if searchText.count >= 2{
-                collectionViewStartAnimating()
-                GetProduct.shared.getProduct { product in
-                    var searchProdunct = Product()
-                    product?.forEach({ element in
-                        if element.title.lowercased().contains(searchText.lowercased()){
-                            searchProdunct.append(element)
-                        }
-                    })
-                    self.products = searchProdunct
-                    self.collectionViewStopAnimating()
-                }
-            }
-        }
+        viewModel.fetchSearchProducts(with: searchText)
         
     }
     

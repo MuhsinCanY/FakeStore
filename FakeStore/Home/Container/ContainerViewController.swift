@@ -9,7 +9,6 @@ import UIKit
 
 class ContainerViewController: UIViewController {
         
-    
     // MARK: - Properties
     
     var menuController: UIViewController!
@@ -28,10 +27,6 @@ class ContainerViewController: UIViewController {
     }
     
     // MARK: - Handlers
-    
-//    override var preferredStatusBarStyle: UIStatusBarStyle{
-//        .lightContent
-//    }
     
     func configureHomeViewController(){
         let homeController = HomeViewController()
@@ -83,3 +78,8 @@ extension ContainerViewController: HomeControllerDelegate{
         showMenuController(shouldExtend: isExtended)
     }
 }
+
+protocol HomeControllerDelegate{
+    func handleMenuToggle()
+}
+
