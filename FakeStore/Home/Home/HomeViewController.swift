@@ -91,7 +91,6 @@ class HomeViewController: UIViewController {
     }()
     
     lazy var menuButton = AnimatedButton(iconImageName: "menu", iconImageColor: .black, action: UIAction.init(handler: { _ in
-        print("menutapped")
         self.delegate?.handleMenuToggle()
     }))
     

@@ -35,6 +35,9 @@
 		ACA8ABB329DA447C004D4AC6 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA8ABB229DA447C004D4AC6 /* Observable.swift */; };
 		ACA8ABB529DB4630004D4AC6 /* HomeModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA8ABB429DB462F004D4AC6 /* HomeModelView.swift */; };
 		ACA8ABB729DC36AC004D4AC6 /* CALayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA8ABB629DC36AC004D4AC6 /* CALayer+Ext.swift */; };
+		ACB6DE7C29E6AC3B00BF4730 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB6DE7B29E6AC3B00BF4730 /* SearchViewController.swift */; };
+		ACB6DEF429FECCBF00BF4730 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB6DEF329FECCBF00BF4730 /* SignInViewController.swift */; };
+		ACB6DEF829FFD6D600BF4730 /* SkyFloatingLabelTextField in Frameworks */ = {isa = PBXBuildFile; productRef = ACB6DEF729FFD6D600BF4730 /* SkyFloatingLabelTextField */; };
 		ACE375E229B286A900FA918F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE375E129B286A900FA918F /* AppDelegate.swift */; };
 		ACE375E429B286A900FA918F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE375E329B286A900FA918F /* SceneDelegate.swift */; };
 		ACE375E629B286A900FA918F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE375E529B286A900FA918F /* HomeViewController.swift */; };
@@ -80,6 +83,9 @@
 		ACA8ABB229DA447C004D4AC6 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		ACA8ABB429DB462F004D4AC6 /* HomeModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModelView.swift; sourceTree = "<group>"; };
 		ACA8ABB629DC36AC004D4AC6 /* CALayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Ext.swift"; sourceTree = "<group>"; };
+		ACB6DE7B29E6AC3B00BF4730 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		ACB6DEF329FECCBF00BF4730 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		ACB6DEF529FFD69500BF4730 /* SkyFloatingLabelTextField-main */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "SkyFloatingLabelTextField-main"; path = "../../../Downloads/SkyFloatingLabelTextField-main"; sourceTree = "<group>"; };
 		ACE375DE29B286A900FA918F /* FakeStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE375E129B286A900FA918F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACE375E329B286A900FA918F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC34887429C0701000C52005 /* RealmSwift in Frameworks */,
+				ACB6DEF829FFD6D600BF4730 /* SkyFloatingLabelTextField in Frameworks */,
 				AC34880329BE451B00C52005 /* Cosmos in Frameworks */,
 				ACE375F729B2889A00FA918F /* SnapKit in Frameworks */,
 				ACE3760429B48A7400FA918F /* Alamofire in Frameworks */,
@@ -238,11 +245,27 @@
 			path = "Menu Items";
 			sourceTree = "<group>";
 		};
+		ACB6DEF629FFD6D600BF4730 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ACB6DEF92A00451300BF4730 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				ACB6DEF329FECCBF00BF4730 /* SignInViewController.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
 		ACE375D529B286A800FA918F = {
 			isa = PBXGroup;
 			children = (
 				ACE375E029B286A900FA918F /* FakeStore */,
 				ACE375DF29B286A900FA918F /* Products */,
+				ACB6DEF629FFD6D600BF4730 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -260,6 +283,8 @@
 				ACE375E129B286A900FA918F /* AppDelegate.swift */,
 				ACE375E329B286A900FA918F /* SceneDelegate.swift */,
 				ACA8ABB229DA447C004D4AC6 /* Observable.swift */,
+				ACB6DEF92A00451300BF4730 /* SignIn */,
+				ACB6DE7B29E6AC3B00BF4730 /* SearchViewController.swift */,
 				AC34887529C0702600C52005 /* Realm-Database */,
 				AC34884B29BF5DE700C52005 /* CustomWidgets */,
 				AC2E5F3A29B74F3E00365808 /* Extentions */,
@@ -271,6 +296,7 @@
 				ACE375EA29B286B000FA918F /* Assets.xcassets */,
 				ACE375EC29B286B000FA918F /* LaunchScreen.storyboard */,
 				ACE375EF29B286B000FA918F /* Info.plist */,
+				ACB6DEF529FFD69500BF4730 /* SkyFloatingLabelTextField-main */,
 			);
 			path = FakeStore;
 			sourceTree = "<group>";
@@ -334,6 +360,7 @@
 				ACE3760329B48A7400FA918F /* Alamofire */,
 				AC34880229BE451B00C52005 /* Cosmos */,
 				AC34887329C0701000C52005 /* RealmSwift */,
+				ACB6DEF729FFD6D600BF4730 /* SkyFloatingLabelTextField */,
 			);
 			productName = FakeStore;
 			productReference = ACE375DE29B286A900FA918F /* FakeStore.app */;
@@ -416,12 +443,14 @@
 				ACA8ABB129DA35C5004D4AC6 /* CartViewModel.swift in Sources */,
 				AC3488D929C9ADD900C52005 /* Photo.swift in Sources */,
 				ACE3760B29B6154E00FA918F /* HomeCategoryCollectionViewCell.swift in Sources */,
+				ACB6DE7C29E6AC3B00BF4730 /* SearchViewController.swift in Sources */,
 				ACE375E229B286A900FA918F /* AppDelegate.swift in Sources */,
 				AC34893F29D2F60100C52005 /* UITextView+Ext.swift in Sources */,
 				ACA8ABB529DB4630004D4AC6 /* HomeModelView.swift in Sources */,
 				AC3488CA29C5C8F500C52005 /* Menu.swift in Sources */,
 				ACE3760929B4F7AF00FA918F /* GetCategories.swift in Sources */,
 				AC3488D229C71EBB00C52005 /* AboutUsViewController.swift in Sources */,
+				ACB6DEF429FECCBF00BF4730 /* SignInViewController.swift in Sources */,
 				AC3488C229C4863D00C52005 /* ContainerViewController.swift in Sources */,
 				ACE375FB29B29A9900FA918F /* Product.swift in Sources */,
 				ACE3760129B489F500FA918F /* NetworkManager.swift in Sources */,
@@ -686,6 +715,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AC34887229C0701000C52005 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		ACB6DEF729FFD6D600BF4730 /* SkyFloatingLabelTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SkyFloatingLabelTextField;
 		};
 		ACE375F629B2889A00FA918F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

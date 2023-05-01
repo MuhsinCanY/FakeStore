@@ -298,6 +298,11 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let product = products?[indexPath.item]
+        navigationController?.pushViewController(DetailViewController(productId: product!.id), animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: width, height: width * 1.3)
     }

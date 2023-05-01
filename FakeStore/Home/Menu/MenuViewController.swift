@@ -58,6 +58,9 @@ class MenuViewController: UIViewController {
         return lbl
     }()
     
+    lazy var logOutButton = AnimatedButton(title: "LOGOUT", titleColor: .systemRed, font: .boldSystemFont(ofSize: 18), backgroundColor: .init(white: 0, alpha: 0.1), cornerRadius: 8, action: UIAction.init(handler: { _ in
+        self.navigationController?.popToRootViewController(animated: true)
+    }))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +95,7 @@ class MenuViewController: UIViewController {
 
         
         view.backgroundColor = .systemBackground
-        view.addSubviews(seperatorView, tableView, userImageView, userImagePickerButton, userImageRemoveButton, userName)
+        view.addSubviews(seperatorView, tableView, userImageView, userImagePickerButton, userImageRemoveButton, userName, logOutButton)
         
         seperatorView.snp.makeConstraints { make in
             make.trailing.equalTo(view)
@@ -134,6 +137,13 @@ class MenuViewController: UIViewController {
             make.centerX.equalTo(userImageView)
         }
         
+        logOutButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
+            make.trailing.equalTo(seperatorView.snp_leadingMargin).offset(-20)
+            make.leading.equalTo(view).offset(20)
+            make.height.equalTo(45)
+        }
+
     }
     
 
